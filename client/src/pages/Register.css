@@ -1,0 +1,25 @@
+.register {
+  width: 100%;
+  height: 750px;
+  display: flex;
+  flex-direction: column;
+  justify-self: center;
+  align-items: center;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.register-form input,
+button {
+  margin: 10px;
+  width: 400px;
+  height: 50px;
+  padding: 5px;
+}
+
+.register button {
+  cursor: pointer;
+}
