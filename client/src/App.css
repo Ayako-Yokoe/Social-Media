@@ -19,3 +19,26 @@
   background-color: #a6ddf0;
   filter: blur(72px);
 }
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 0.5rem;
+  color: #fff;
+  background-color: orange;
+  transition: all 100ms ease-out;
+}
+
+.button:hover {
+  cursor: pointer;
+  color: orange;
+  background-color: transparent;
+  border: 2px solid orange;
+}
+
+/* Hide all scrollbars */
+::-webkit-scrollbar {
+  display: none;
+}

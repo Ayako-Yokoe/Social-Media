@@ -1,0 +1,42 @@
+export const postsData = [
+  {
+    id: 1,
+    img: "",
+    name: "post1",
+    description: "description",
+    likes: 100,
+    liked: true,
+  },
+  {
+    id: 2,
+    img: "",
+    name: "post2",
+    description: "description",
+    likes: 200,
+    liked: false,
+  },
+  {
+    id: 3,
+    img: "",
+    name: "post3",
+    description: "description",
+    likes: 300,
+    liked: true,
+  },
+  {
+    id: 4,
+    img: "",
+    name: "post4",
+    description: "description",
+    likes: 400,
+    liked: false,
+  },
+  {
+    id: 5,
+    img: "",
+    name: "post5",
+    description: "description",
+    likes: 100,
+    liked: true,
+  },
+];

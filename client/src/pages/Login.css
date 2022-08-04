@@ -12,14 +12,14 @@
   flex-direction: column;
 }
 
-.login-form input,
-button {
+.login-form > input,
+.login-form > button {
   margin: 10px;
   width: 400px;
   height: 50px;
   padding: 5px;
 }
 
-.login button {
+.login > button {
   cursor: pointer;
 }

@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import "./Home.css";
 import ProfileSide from "../components/ProfileSide";
+import PostSide from "../components/PostSide";
+import RightSide from "../components/RightSide";
 
 const Home = () => {
   // useEffect(() => {
@@ -12,8 +14,8 @@ const Home = () => {
   return (
     <div className="home">
       <ProfileSide />
-      <div className="postSide">post</div>
-      <div className="rightSide">right</div>
+      <PostSide />
+      <RightSide />
     </div>
   );
 };

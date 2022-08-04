@@ -12,14 +12,14 @@
   flex-direction: column;
 }
 
-.upload-form input,
-button {
+.upload-form > input,
+.upload-form > button {
   margin: 10px;
   width: 400px;
   height: 50px;
   padding: 5px;
 }
 
-.upload button {
+.upload > button {
   cursor: pointer;
 }

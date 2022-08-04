@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Upload from "./pages/Upload";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -12,7 +13,8 @@ function App() {
       <div className="App">
         <div className="blur" style={{ top: "-18%", right: "0" }}></div>
         <div className="blur" style={{ top: "36%", left: "-8rem" }}></div>
-        <Home />
+        {/* <Home /> */}
+        <Profile />
       </div>
       {/* <Navbar />
       <Routes>
