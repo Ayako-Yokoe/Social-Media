@@ -9,13 +9,18 @@ import Upload from "./pages/Upload";
 function App() {
   return (
     <BrowserRouter>
-      <Navbar />
+      <div className="App">
+        <div className="blur" style={{ top: "-18%", right: "0" }}></div>
+        <div className="blur" style={{ top: "36%", left: "-8rem" }}></div>
+        <Home />
+      </div>
+      {/* <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/upload" element={<Upload />} />
-      </Routes>
+      </Routes> */}
     </BrowserRouter>
   );
 }
