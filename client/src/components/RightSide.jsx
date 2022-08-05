@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import "./RightSide.css";
 import HomeIcon from "@mui/icons-material/Home";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import SmsOutlinedIcon from "@mui/icons-material/SmsOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import TrendCard from "./TrendCard";
+import ShareModal from "./ShareModal";
 
 const RightSide = () => {
+  const [modalOpen, setModalOpen] = useState(false);
   return (
     <div className="rightSide">
       <div className="navIcons">
@@ -16,7 +18,10 @@ const RightSide = () => {
         <SettingsOutlinedIcon />
       </div>
       <TrendCard />
-      <button className="button r-button">Share</button>
+      <button className="button r-button" onClick={() => setModalOpen(true)}>
+        Share
+      </button>
+      <ShareModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
     </div>
   );
 };

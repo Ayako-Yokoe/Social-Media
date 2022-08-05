@@ -14,7 +14,7 @@ const Post = ({ post }) => {
         <SmsOutlinedIcon />
         <SendOutlinedIcon />
       </div>
-      <span>{post.likes} likes</span>
+      <span style={{ fonrSize: 12 }}>{post.likes} likes</span>
       <div className="detail">
         <span>
           <b>{post.name}</b>

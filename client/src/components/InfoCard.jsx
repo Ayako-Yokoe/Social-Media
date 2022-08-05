@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import "./InfoCard.css";
 import CreateIcon from "@mui/icons-material/Create";
+import ProfileModal from "../components/ProfileModal";
 
 const InfoCard = () => {
+  const [modalOpen, setModalOpen] = useState(false);
   return (
     <div className="infoCard">
       <div className="infoHead">
         <h4>Your Info</h4>
-        <CreateIcon />
+        <CreateIcon onClick={() => setModalOpen(true)} />
+        <ProfileModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
       </div>
       <div className="info">
         <span>

@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Upload from "./pages/Upload";
 import Profile from "./pages/Profile";
+import Auth from "./pages/Auth";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <div className="blur" style={{ top: "36%", left: "-8rem" }}></div>
         {/* <Home /> */}
         <Profile />
+        {/* <Auth /> */}
       </div>
       {/* <Navbar />
       <Routes>
