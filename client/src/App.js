@@ -15,16 +15,16 @@ function App() {
         <div className="blur" style={{ top: "-18%", right: "0" }}></div>
         <div className="blur" style={{ top: "36%", left: "-8rem" }}></div>
         {/* <Home /> */}
-        <Profile />
+        {/* <Profile /> */}
         {/* <Auth /> */}
       </div>
-      {/* <Navbar />
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/upload" element={<Upload />} />
-      </Routes> */}
+      </Routes>
     </BrowserRouter>
   );
 }
