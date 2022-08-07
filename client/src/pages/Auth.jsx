@@ -1,6 +1,8 @@
 import React from "react";
 import "./Auth.css";
 
+// omit
+
 const Auth = () => {
   return (
     <div className="auth">

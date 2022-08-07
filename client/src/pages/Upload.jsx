@@ -3,15 +3,33 @@ import axios from "axios";
 import "./Upload.css";
 
 // Pedro is using cloudinary to store images
-// Decide what platform to use, firebase?
-// Then, change the "upload" method, add a route, and add a table to db
+// npm package
 
 const Upload = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState([]);
 
-  const upload = () => {};
+  const upload = () => {
+    // const formData = new FormData();
+    // formData.append("file", image[0]);
+    // formData.append("upload_preset", "vgmulp38");
+    // Axios.post(
+    //   `https://api.cloudinary.com/v1_1/pedro-machado-inc/image/upload`,
+    //   formData
+    // ).then((response) => {
+    //   const fileName = response.data.public_id;
+    //   Axios.post("http://localhost:3001/upload", {
+    //     title: title,
+    //     description: description,
+    //     image: fileName,
+    //     author: localStorage.getItem("username"),
+    //   })
+    //   .then(() => {
+    //     history.push("/");
+    //   });
+    // });
+  };
 
   return (
     <div className="upload">

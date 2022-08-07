@@ -18,7 +18,7 @@ function App() {
         {/* <Profile /> */}
         {/* <Auth /> */}
       </div>
-      <Navbar />
+      {/* <Navbar /> */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />

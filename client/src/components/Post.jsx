@@ -5,21 +5,27 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import SmsOutlinedIcon from "@mui/icons-material/SmsOutlined";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 
+import { Image } from "cloudinary-react";
+
 const Post = ({ post }) => {
   return (
     <div className="post">
-      {/* <img src={post.img} alt={post.name} /> */}
+      <div>
+        <Image
+          cloudName="dhhigoayx"
+          publicId={post.image}
+          className="postImage"
+        />
+      </div>
+
       <div className="postReact">
-        {post.liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+        {post.like ? <FavoriteIcon /> : <FavoriteBorderIcon />}
         <SmsOutlinedIcon />
         <SendOutlinedIcon />
       </div>
-      <span style={{ fonrSize: 12 }}>{post.likes} likes</span>
+      <span style={{ fonrSize: 12 }}>{post.like} likes</span>
       <div className="detail">
-        <span>
-          <b>{post.name}</b>
-        </span>
-        <span> {post.description}</span>
+        <span>{post.post}</span>
       </div>
     </div>
   );
