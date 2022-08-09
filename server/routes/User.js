@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../config/db");
+const db = require("../config/db.config");
 
 router.post("/register", (req, res) => {
   const username = req.body.username;
@@ -9,8 +9,18 @@ router.post("/register", (req, res) => {
     "INSERT INTO Users (username, password) VALUES (?, ?);",
     [username, password],
     (error, results) => {
-      console.log(error);
-      res.send(results);
+      // console.log(error);
+      // res.send(results);
+      if (error) {
+        if (error.code === "ER_DUP_ENTRY" || error.errno === 1062) {
+          res.json({
+            register: false,
+            message: "The username already exists.",
+          });
+        }
+      } else {
+        res.send(results);
+      }
     }
   );
 });

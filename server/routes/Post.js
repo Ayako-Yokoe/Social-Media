@@ -1,11 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../config/db");
+const db = require("../config/db.config");
 
 router.post("/", (req, res) => {
   const post = req.body.post;
   const image = req.body.image;
   const like = req.body.like;
+
+  console.log("like ", like);
+  console.log("like type", typeof like);
+
   db.query(
     "INSERT INTO Post (post, image, like) VALUES (?, ?, ?);",
     [post, image, like],

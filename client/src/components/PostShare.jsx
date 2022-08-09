@@ -26,6 +26,8 @@ const PostShare = () => {
   };
 
   // MySQL has no built-in boolean. 0 or 1
+  // error: parce error
+  // sql: "INSERT INTO Post (post, image, like) VALUES ('post4', 'jwuallmtjcun9s9dweyu', 1);"
 
   const upload = () => {
     const formData = new FormData();
@@ -39,7 +41,7 @@ const PostShare = () => {
         axiox.post("http://localhost:3001/post", {
           post: newPost,
           image: fileName,
-          like: 1,
+          like: 0,
         });
       })
       .then(() => {

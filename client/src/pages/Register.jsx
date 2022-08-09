@@ -6,24 +6,36 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [checkPassword, setCheckPassword] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const register = () => {
+  const handleRegister = (e) => {
+    setCheckPassword(true);
+    e.preventDefault();
     if (password !== confirmPassword) {
-      alert("Passwords don't match");
+      setCheckPassword(false);
       return false;
     }
 
-    axios
-      .post("http://localhost:3001/user/register", {
-        username: username,
-        password: password,
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (username !== "" && password !== "") {
+      axios
+        .post("http://localhost:3001/user/register", {
+          username: username,
+          password: password,
+        })
+        .then((res) => {
+          if (!res.data.register) {
+            setErrorMessage(res.data.message);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
+    setUsername("");
+    setPassword("");
+    setConfirmPassword("");
   };
 
   return (
@@ -38,14 +50,17 @@ const Register = () => {
       </div>
 
       <div className="registerRight">
-        <form className="infoForm registerForm">
+        <form className="infoForm registerForm" onSubmit={handleRegister}>
           <h3>Sign Up</h3>
+          <p>{errorMessage ? errorMessage : ""}</p>
           <div>
             <input
               className="infoInput"
               type="text"
               placeholder="Username"
               name="username"
+              value={username}
+              required
               onChange={(e) => setUsername(e.target.value)}
             />
           </div>
@@ -55,6 +70,8 @@ const Register = () => {
               type="password"
               placeholder="Password"
               name="password"
+              value={password}
+              required
               onChange={(e) => setPassword(e.target.value)}
             />
             <input
@@ -62,13 +79,18 @@ const Register = () => {
               type="password"
               placeholder="Confirm Password"
               name="comfirmPassword"
+              value={confirmPassword}
+              required
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </div>
+
+          {!checkPassword && <p>Passwords don't match</p>}
+
           <div>
             <span className="account">Already have an account? Login!</span>
           </div>
-          <button className="button info-button" onClick={register}>
+          <button className="button info-button" type="submit">
             Sign Up
           </button>
         </form>

@@ -7,24 +7,30 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const login = () => {
-    axios
-      .post("http://localhost:3001/user/login", {
-        username: username,
-        password: password,
-      })
-      .then((res) => {
-        if (res.data.loggedIn) {
-          localStorage.setItem("loggedIn", true);
-          localStorage.setItem("username", res.data.username);
-          // redirect to home
-        } else {
-          setErrorMessage(res.data.message);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (username !== "" && password !== "") {
+      axios
+        .post("http://localhost:3001/user/login", {
+          username: username,
+          password: password,
+        })
+        .then((res) => {
+          if (res.data.loggedIn) {
+            localStorage.setItem("loggedIn", true);
+            localStorage.setItem("username", res.data.username);
+            // redirect to home
+          } else {
+            setErrorMessage(res.data.message);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
+    setUsername("");
+    setPassword("");
   };
 
   return (
@@ -39,14 +45,17 @@ const Login = () => {
       </div>
 
       <div className="loginRight">
-        <form className="infoForm loginForm">
+        <form className="infoForm loginForm" onSubmit={handleLogin}>
           <h3>Log In</h3>
+          <p>{errorMessage ? errorMessage : ""}</p>
           <div>
             <input
               className="infoInput"
               type="text"
               placeholder="Username"
               name="username"
+              value={username}
+              required
               onChange={(e) => setUsername(e.target.value)}
             />
           </div>
@@ -56,17 +65,18 @@ const Login = () => {
               type="password"
               placeholder="Password"
               name="password"
+              value={password}
+              required
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <div>
             <span className="account">Don't have an account? Sign up!</span>
           </div>
-          <button className="button info-button" onSubmit={login}>
+          <button className="button info-button" type="submit">
             Log In
           </button>
         </form>
-        <p>{errorMessage}</p>
       </div>
 
       {/* <h1>Login</h1>
