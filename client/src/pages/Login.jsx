@@ -15,9 +15,26 @@ const Login = () => {
           username: username,
           password: password,
         })
+
+        // //
+        // }).then((response) => {
+        //   if (!response.data.auth) {
+        //     setLoginStatus( false);
+        //   } else {
+        //     console.log(response.data);
+        //     localStorage.setItem("token", response.data.token)
+        //     setLoginStatus (true);
+        //   }
+        // });
+        //
+
+        //
+        //res.json({ loggedin: true, token: token, results: results });
+        //
+
         .then((res) => {
           if (res.data.loggedIn) {
-            localStorage.setItem("loggedIn", true);
+            localStorage.setItem("token", res.data.token);
             localStorage.setItem("username", res.data.username);
             // redirect to home
           } else {
