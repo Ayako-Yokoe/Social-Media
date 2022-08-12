@@ -1,42 +1,42 @@
-import React, { useState } from "react";
-import axios from "axios";
-import "./Register.css";
+import React, { useState } from "react"
+import axios from "axios"
+import "./Register.css"
+
+import { register } from "../service/auth.service"
 
 const Register = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [checkPassword, setCheckPassword] = useState(true);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
+  const [checkPassword, setCheckPassword] = useState(true)
+  const [errorMessage, setErrorMessage] = useState("")
 
   const handleRegister = (e) => {
-    setCheckPassword(true);
-    e.preventDefault();
+    setCheckPassword(true)
+    e.preventDefault()
     if (password !== confirmPassword) {
-      setCheckPassword(false);
-      return false;
+      setCheckPassword(false)
+      return false
     }
 
     if (username !== "" && password !== "") {
-      axios
-        .post("http://localhost:3001/user/register", {
-          username: username,
-          password: password,
-        })
+      register(username, password)
         .then((res) => {
-          if (!res.data.register) {
-            setErrorMessage(res.data.message);
+          if (!res.register) {
+            setErrorMessage(res.message)
+            return false
           }
+          window.location.href = "/"
         })
         .catch((err) => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     }
 
-    setUsername("");
-    setPassword("");
-    setConfirmPassword("");
-  };
+    setUsername("")
+    setPassword("")
+    setConfirmPassword("")
+  }
 
   return (
     <div className="register">
@@ -111,7 +111,7 @@ const Register = () => {
         <button onClick={register}>Register</button>
       </div> */}
     </div>
-  );
-};
+  )
+}
 
-export default Register;
+export default Register

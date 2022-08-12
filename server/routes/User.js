@@ -31,7 +31,7 @@ router.post("/register", (req, res) => {
             console.log(error)
           }
         } else {
-          res.send(results)
+          res.json({ register: true, message: "Successfully registered." })
         }
       }
     )

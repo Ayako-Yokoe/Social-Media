@@ -1,54 +1,60 @@
-import React, { useState } from "react";
-import axios from "axios";
-import "./Login.css";
+import React, { useState } from "react"
+import axios from "axios"
+import "./Login.css"
+
+import { login } from "../service/auth.service"
 
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [errorMessage, setErrorMessage] = useState("")
 
   const handleLogin = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (username !== "" && password !== "") {
-      axios
-        .post("http://localhost:3001/user/login", {
-          username: username,
-          password: password,
-        })
-
-        // //
-        // }).then((response) => {
-        //   if (!response.data.auth) {
-        //     setLoginStatus( false);
-        //   } else {
-        //     console.log(response.data);
-        //     localStorage.setItem("token", response.data.token)
-        //     setLoginStatus (true);
-        //   }
-        // });
-        //
-
-        //
-        //res.json({ loggedin: true, token: token, results: results });
-        //
-
+      login(username, password)
         .then((res) => {
-          if (res.data.loggedIn) {
-            localStorage.setItem("token", res.data.token);
-            localStorage.setItem("username", res.data.username);
-            // redirect to home
+          if (!res.token) {
+            setErrorMessage(res.message)
+            return false
           } else {
-            setErrorMessage(res.data.message);
+            window.location.href = "/"
           }
         })
         .catch((err) => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     }
 
-    setUsername("");
-    setPassword("");
-  };
+    setUsername("")
+    setPassword("")
+  }
+
+  // const handleLogin = (e) => {
+  //   e.preventDefault()
+  //   if (username !== "" && password !== "") {
+  //     axios
+  //       .post("http://localhost:3001/user/login", {
+  //         username: username,
+  //         password: password,
+  //       })
+  //       .then((res) => {
+  //         if (res.data.loggedIn) {
+  //           localStorage.setItem("token", res.data.token)
+  //           localStorage.setItem("username", res.data.username)
+  //           // redirect to home
+  //         } else {
+  //           setErrorMessage(res.data.message)
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         console.log(err)
+  //       })
+  //   }
+
+  //   setUsername("")
+  //   setPassword("")
+  // }
 
   return (
     <div className="login">
@@ -112,7 +118,7 @@ const Login = () => {
       </div>
       <p>{errorMessage}</p> */}
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login
