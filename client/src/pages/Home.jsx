@@ -7,15 +7,9 @@ import RightSide from "../components/RightSide"
 import { logout } from "../service/auth.service"
 
 const Home = () => {
-  // useEffect(() => {
-  //   if (!localStorage.getItem("loggedIn")) {
-  //     localStorage.setItem("loggedIn", false);
-  //   }
-  // }, []);
-
   return (
     <div className="home">
-      <button onClick={logout}>LOG OUT</button>
+      {/* <button onClick={logout}>LOG OUT</button> */}
       <ProfileSide />
       <PostSide />
       <RightSide />

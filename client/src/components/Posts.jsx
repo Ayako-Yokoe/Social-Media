@@ -1,27 +1,34 @@
-import React, { useState, useEffect } from "react";
-import { postsData } from "./PostsData";
-import Post from "./Post";
-import "./Posts.css";
+import React, { useState, useEffect, useContext } from "react"
+import { postsData } from "./PostsData"
+import Post from "./Post"
+import "./Posts.css"
 
-import axios from "axios";
-import PostShare from "./PostShare";
+import axios from "axios"
+import PostShare from "./PostShare"
+import Context from "../context"
 
 const Posts = () => {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState([])
+  const { setIsLoading } = useContext(Context)
 
   useEffect(() => {
-    axios.get("http://localhost:3001/post").then((res) => {
-      setPosts(res.data);
-    });
-  }, []);
+    // add async await, try catch
+    setIsLoading(true)
+    axios.get("http://localhost:3001/api/post").then((res) => {
+      setPosts(res.data)
+    })
+    setIsLoading(false)
+  }, [setIsLoading])
+
+  console.log("posts ", { posts: posts })
 
   return (
     <div className="posts">
       {posts.map((post, id) => (
-        <Post post={post} id={id} key={id} />
+        <Post post={post} key={id} />
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default Posts;
+export default Posts
