@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import "./InfoCard.css";
-import CreateIcon from "@mui/icons-material/Create";
-import ProfileModal from "../components/ProfileModal";
+import React, { useState } from "react"
+import "./InfoCard.css"
+import CreateIcon from "@mui/icons-material/Create"
+import ProfileModal from "../ProfileModal/ProfileModal"
 
 const InfoCard = () => {
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false)
   return (
     <div className="infoCard">
       <div className="infoHead">
@@ -32,7 +32,7 @@ const InfoCard = () => {
       </div>
       <button className="button logout-button">Log Out</button>
     </div>
-  );
-};
+  )
+}
 
-export default InfoCard;
+export default InfoCard

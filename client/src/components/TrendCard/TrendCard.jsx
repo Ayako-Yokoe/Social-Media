@@ -1,6 +1,6 @@
-import React from "react";
-import "./TrendCard.css";
-import { trendData } from "./TrendData";
+import React from "react"
+import "./TrendCard.css"
+import { trendData } from "../TrendData"
 
 const TrendCard = () => {
   return (
@@ -13,7 +13,7 @@ const TrendCard = () => {
         </div>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default TrendCard;
+export default TrendCard

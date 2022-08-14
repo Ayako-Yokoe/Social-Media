@@ -1,35 +1,27 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useState, useEffect } from "react"
 import "./Post.css"
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder"
 import FavoriteIcon from "@mui/icons-material/Favorite"
 import SmsOutlinedIcon from "@mui/icons-material/SmsOutlined"
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined"
 
-import Context from "../context"
+import Context from "../../context"
 import { Image } from "cloudinary-react"
 import axios from "axios"
 
-// Create api and db for reactions
-// handlePostReactions
-// toggle
+// Like button - need reloading
+// Delete posts - only the user
 
 const Post = ({ post }) => {
   const { user, setIsLoading } = useContext(Context)
-  //const [displayPost, setDisplayPost] = useState(null)
+  const [displayPost, setDisplayPost] = useState(post)
 
-  // handle like
-  // post get
   const handlePostReaction = async () => {
     const userId = user.id
-    const postId = post.id
+    const postId = displayPost.id
     if (!userId || !postId) {
       return
     }
-
-    // response.data.message ?
-    // const response = await axios.post(url, { post_id: postId, user_id: userId });
-    // setPost(prevPost => ({ ...prevPost, hasLiked: response && response.data && response.data.message ? false : true }));
-    // setIsLoading(false);
 
     try {
       setIsLoading(true)
@@ -37,9 +29,10 @@ const Post = ({ post }) => {
         post_id: postId,
         user_id: userId,
       })
-      setPost((prevPost) => ({
+      setDisplayPost((prevPost) => ({
         ...prevPost,
-        hasLiked: response && response.data ? false : true,
+        hasLiked:
+          response && response.data && response.data.message ? false : true,
       }))
       setIsLoading(false)
     } catch (error) {
@@ -48,38 +41,46 @@ const Post = ({ post }) => {
     }
   }
 
+  useEffect(() => {
+    handlePostReaction()
+  }, [setDisplayPost])
+
   const removeLike = async () => {
     return await axios.post("http://localhost:3001/api/reactions/delete", {
-      post_id: post.id,
+      post_id: displayPost.id,
       user_id: user.id,
     })
   }
 
   const like = async () => {
     return await axios.post("http://localhost:3001/api/reactions/create", {
-      post_id: post.id,
+      post_id: displayPost.id,
       user_id: user.id,
     })
   }
 
   const updateNumberOfReactions = async (numberOfReactions) => {
-    return await axios.post("http://localhost:3001/api/reactions", {
-      id: post.id,
+    return await axios.post("http://localhost:3001/api/posts/reactions", {
+      id: displayPost.id,
       numberOfReactions,
     })
   }
 
   const toggleReactions = async () => {
     try {
-      if (post.hasLiked) {
+      if (displayPost.hasLiked) {
         await removeLike()
         await updateNumberOfReactions(
-          post.number_of_reactions ? post.number_of_reactions - 1 : 0
+          displayPost.number_of_reactions
+            ? displayPost.number_of_reactions - 1
+            : 0
         )
       } else {
         await like()
         await updateNumberOfReactions(
-          post.number_of_reactions ? post.number_of_reactions + 1 : 1
+          displayPost.number_of_reactions
+            ? displayPost.number_of_reactions + 1
+            : 1
         )
       }
     } catch (error) {
@@ -92,22 +93,26 @@ const Post = ({ post }) => {
       <div>
         <Image
           cloudName="dhhigoayx"
-          publicId={post.image}
+          publicId={displayPost.image}
           className="postImage"
         />
       </div>
 
       <div className="postReact">
         <span onClick={toggleReactions}>
-          <FavoriteBorderIcon />
+          {displayPost.hasLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
         </span>
-        {/* {post.like ? <FavoriteIcon /> : <FavoriteBorderIcon />} */}
+
         <SmsOutlinedIcon />
         <SendOutlinedIcon />
       </div>
-      <span style={{ fonrSize: 12 }}>{post.like} likes</span>
+      <span style={{ fonrSize: 12 }}>
+        {displayPost?.number_of_reactions
+          ? `${displayPost?.number_of_reactions} likes`
+          : `0 likes`}
+      </span>
       <div className="detail">
-        <span>{post.post}</span>
+        <span>{displayPost.post}</span>
       </div>
     </div>
   )

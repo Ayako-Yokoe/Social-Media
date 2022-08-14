@@ -1,10 +1,10 @@
 import React, { useEffect } from "react"
 import "./Home.css"
-import ProfileSide from "../components/ProfileSide"
-import PostSide from "../components/PostSide"
-import RightSide from "../components/RightSide"
+import ProfileSide from "../../components/ProfileSide/ProfileSide"
+import PostSide from "../../components/PostSide/PostSide"
+import RightSide from "../../components/RightSide/RightSide"
 
-import { logout } from "../service/auth.service"
+import { logout } from "../../service/auth.service"
 
 const Home = () => {
   return (

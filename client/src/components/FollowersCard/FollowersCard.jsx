@@ -1,6 +1,6 @@
-import React from "react";
-import { followers } from "./FollowersData";
-import "./FollowersCard.css";
+import React from "react"
+import { followers } from "../FollowersData"
+import "./FollowersCard.css"
 
 const FollowersCard = () => {
   return (
@@ -23,7 +23,7 @@ const FollowersCard = () => {
         </div>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default FollowersCard;
+export default FollowersCard

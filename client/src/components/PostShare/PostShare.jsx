@@ -8,7 +8,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth"
 import ClearIcon from "@mui/icons-material/Clear"
 import axios from "axios"
 
-import { getCurrentUser } from "../service/auth.service"
+import { getCurrentUser } from "../../service/auth.service"
 
 const PostShare = () => {
   const [newPost, setNewPost] = useState("")
@@ -28,12 +28,6 @@ const PostShare = () => {
     }
   }
 
-  // MySQL has no built-in boolean. 0 or 1
-  // error: parse error
-  // sql: "INSERT INTO Post (post, image, like) VALUES ('post4', 'jwuallmtjcun9s9dweyu', 1);"
-
-  // alter MySQL table -> Not Null
-
   const upload = () => {
     const formData = new FormData()
     formData.append("file", image[0])
@@ -43,16 +37,18 @@ const PostShare = () => {
       .then((res) => {
         const fileName = res.data.public_id
 
-        axiox.post("http://localhost:3001/api/post", {
+        axiox.post("http://localhost:3001/api/posts", {
           post: newPost,
           image: fileName,
-          like: 0,
           author: user.token,
         })
       })
       .then(() => {
         console.log("go back to home page")
       })
+
+    // may not need because of the link
+    setPreviewImage(null)
   }
 
   return (

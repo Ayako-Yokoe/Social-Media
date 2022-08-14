@@ -1,7 +1,7 @@
-import React from "react";
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
-import PostShare from "../components/PostShare";
+import React from "react"
+import Box from "@mui/material/Box"
+import Modal from "@mui/material/Modal"
+import PostShare from "../../components/PostShare/PostShare"
 
 const style = {
   position: "absolute",
@@ -13,7 +13,7 @@ const style = {
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
-};
+}
 
 const ShareModal = ({ modalOpen, setModalOpen }) => {
   return (
@@ -29,7 +29,7 @@ const ShareModal = ({ modalOpen, setModalOpen }) => {
         </Box>
       </Modal>
     </div>
-  );
-};
+  )
+}
 
-export default ShareModal;
+export default ShareModal
