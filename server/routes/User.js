@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken")
 const authConfig = require("../config/auth.config")
 const verifyToken = require("../middleware/verifyToken")
 const bcrypt = require("bcrypt")
+const { response } = require("express")
 const saltRound = 10
 
 router.post("/register", (req, res) => {
@@ -73,6 +74,22 @@ router.post("/login", (req, res) => {
       }
     }
   )
+})
+
+// Get the info of the user who is logging in
+router.get("/:id", (req, res) => {
+  const userId = req.params.id
+  if (!userId) {
+    res.json({ message: "Cannot get user information" })
+  }
+  db.query("SELECT * FROM Users WHERE id = ?;", [userId], (error, results) => {
+    if (results && results.length) {
+      res.json(results)
+    } else {
+      res.json({ message: "Cannot get user information" })
+      console.log(error)
+    }
+  })
 })
 
 module.exports = router
