@@ -20,7 +20,7 @@ const Posts = () => {
     setIsLoading(false)
   }, [setIsLoading, setPosts])
 
-  console.log("posts ", { posts: posts })
+  // console.log("posts ", { posts: posts })
 
   return (
     <div className="posts">

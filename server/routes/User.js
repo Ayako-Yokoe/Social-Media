@@ -19,7 +19,7 @@ router.post("/register", (req, res) => {
       console.log(error)
     }
     db.query(
-      "INSERT INTO Users (username, password) VALUES (?, ?);",
+      "INSERT INTO User (username, password) VALUES (?, ?);",
       [username, hash],
       (error, results) => {
         if (error) {
@@ -46,7 +46,7 @@ router.post("/login", (req, res) => {
   const password = req.body.password
 
   db.query(
-    "SELECT * FROM Users WHERE username = ?;",
+    "SELECT * FROM User WHERE username = ?;",
     username,
     (error, results) => {
       if (error) {
@@ -82,9 +82,23 @@ router.get("/:id", (req, res) => {
   if (!userId) {
     res.json({ message: "Cannot get user information" })
   }
-  db.query("SELECT * FROM Users WHERE id = ?;", [userId], (error, results) => {
-    if (results && results.length) {
+  db.query("SELECT * FROM User WHERE id = ?;", [userId], (error, results) => {
+    if (results && results.length > 0) {
+      res.json(results[0])
+      // console.log("results ", results[0])
+    } else {
+      res.json({ message: "Cannot get user information" })
+      console.log(error)
+    }
+  })
+})
+
+// Get all users
+router.get("/", (req, res) => {
+  db.query("SELECT * FROM User;", (error, results) => {
+    if (results) {
       res.json(results)
+      // console.log("results ", results[0])
     } else {
       res.json({ message: "Cannot get user information" })
       console.log(error)

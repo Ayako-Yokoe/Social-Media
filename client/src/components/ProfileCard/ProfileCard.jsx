@@ -10,14 +10,16 @@ const ProfileCard = () => {
   useEffect(() => {
     // add async await, try catch
     setIsLoading(true)
-    axios.get(`http://localhost:3001/api/user/${user.id}`).then((res) => {
-      setCurrentUser(res.data)
-    })
+    try {
+      axios.get(`http://localhost:3001/api/user/${user.id}`).then((res) => {
+        setCurrentUser(res.data)
+      })
+    } catch (error) {
+      console.log(error)
+    }
+
     setIsLoading(false)
   }, [setIsLoading, setCurrentUser])
-
-  // response / currentUser[0] => change it
-  console.log("user ", { currentUser })
 
   const ProfilePage = true
   return (
@@ -28,7 +30,7 @@ const ProfileCard = () => {
         <p>profile icon</p>
       </div>
       <div className="profileName">
-        <span>{currentUser[0].username}</span>
+        <span>{currentUser?.username}</span>
         <span>Job Title</span>
       </div>
 
@@ -37,7 +39,7 @@ const ProfileCard = () => {
         <div>
           <div className="follow">
             <span>
-              {currentUser[0].number_of_following
+              {currentUser?.number_of_following
                 ? currentUser.number_of_following
                 : 0}
             </span>
@@ -46,7 +48,7 @@ const ProfileCard = () => {
           <div className="vl"></div>
           <div className="follow">
             <span>
-              {currentUser[0].number_of_followers
+              {currentUser?.number_of_followers
                 ? currentUser.number_of_followers
                 : 0}
             </span>
@@ -58,7 +60,7 @@ const ProfileCard = () => {
               <div className="vl"></div>
               <div className="follow">
                 <span>
-                  {currentUser[0].number_of_posts
+                  {currentUser?.number_of_posts
                     ? currentUser.number_of_posts
                     : 0}
                 </span>
