@@ -1,7 +1,22 @@
 import React from "react"
 import axios from "axios"
 
-const FollowUsers = ({ person, user, usersYouMayKnow, setUsersYouMayKnow }) => {
+//
+// const MyBigList = ({ term, onItemClick }) => {
+//   const items = useSearch(term);
+//   const map = item => <div onClick={onItemClick}>{item}</div>;
+//   return <div>{items.map(map)}</div>;
+// }
+// export default React.memo(MyBigList);
+//
+
+const FollowUsers = ({
+  person,
+  user,
+  usersYouMayKnow,
+  setUsersYouMayKnow,
+  handleFollowers,
+}) => {
   // hasFollowered
 
   const removeFollow = async () => {
@@ -32,22 +47,30 @@ const FollowUsers = ({ person, user, usersYouMayKnow, setUsersYouMayKnow }) => {
   }
 
   const toggleFollowers = async () => {
+    //console.log("toggleFollowers id ", person.id)
+    handleFollowers(person.id)
+    //console.log("1")
+
     try {
       if (person.hasFollowed) {
         await removeFollow()
         await updateNumberOfFollowers(
-          person.number_of_followers ? person.number_of_followers - 1 : 0
+          // person.number_of_followers ? person.number_of_followers - 1 : 0
+          (person.number_of_followers = 0)
         )
         await updateNumberOfFollowing(
-          user.number_of_following ? user.number_of_following - 1 : 0
+          //user.number_of_following ? user.number_of_following - 1 : 0
+          (user.number_of_following = 0)
         )
       } else {
         await follow()
         await updateNumberOfFollowers(
-          person.number_of_followers ? person.number_of_followers + 1 : 1
+          //person.number_of_followers ? person.number_of_followers + 1 : 1
+          (person.number_of_followers = 0)
         )
         await updateNumberOfFollowing(
-          user.number_of_following ? user.number_of_following + 1 : 1
+          //user.number_of_following ? user.number_of_following + 1 : 1
+          (user.number_of_following = 0)
         )
       }
     } catch (error) {
@@ -72,4 +95,5 @@ const FollowUsers = ({ person, user, usersYouMayKnow, setUsersYouMayKnow }) => {
   )
 }
 
-export default FollowUsers
+export default React.memo(FollowUsers)
+//export default FollowUsers

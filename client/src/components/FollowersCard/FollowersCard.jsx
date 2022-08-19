@@ -10,7 +10,7 @@ const FollowersCard = () => {
   const [usersYouMayKnow, setUsersYouMayKnow] = useState([])
 
   // is there hasFollowed?
-  console.log("usersYouMayKnow ", usersYouMayKnow)
+  console.log("usersYouMayKnow hasFollowed ", usersYouMayKnow)
 
   const loadAllUsers = async () => {
     setIsLoading(true)
@@ -20,8 +20,9 @@ const FollowersCard = () => {
     setIsLoading(false)
   }
 
-  const handleFollowers = async () => {
-    if (!user.id || !usersYouMayKnow.id) {
+  const handleFollowers = async (id) => {
+    const usersYouFollow = usersYouMayKnow.filter((ele) => ele.id === id)
+    if (!user.id || !usersYouFollow[0]?.id) {
       return
     }
 
@@ -29,15 +30,32 @@ const FollowersCard = () => {
       setIsLoading(true)
       const response = await axios.post("http://localhost:3001/api/followers", {
         follower_id: user.id,
-        person_id: usersYouMayKnow.id,
+        person_id: usersYouFollow[0]?.id,
       })
-      setUsersYouMayKnow((prevUserYouMayKnow) => ({
-        ...usersYouMayKnow,
-        hasFollowed:
-          response && response.data && response.data.message ? false : true,
-      }))
 
-      console.log("hasFollowed ", usersYouMayKnow)
+      // setUsersYouMayKnow((prevUserYouMayKnow) => ({
+      //   ...usersYouMayKnow,
+      //   hasFollowed:
+      //     response && response.data && response.data.message ? false : true,
+      // }))
+
+      // const clickFollowed = usersYouMayKnow.filter(
+      //   (ele) => ele.id === response.person_id
+      // )
+      const newUsersYouMayKnow = usersYouMayKnow.map((ele) => {
+        console.log("response.person_id ", response.data.person_id)
+        console.log("ele.id ", ele.id)
+        if (ele.id == response.data.person_id) {
+          console.log("ele.id ", ele.id)
+          console.log("ele ", ele)
+          return { ...ele, handleFollow: response.data ? false : true }
+        }
+        return { ...ele }
+      })
+
+      setUsersYouMayKnow(newUsersYouMayKnow)
+
+      // console.log("hasFollowed ", usersYouMayKnow)
 
       setIsLoading(false)
     } catch (error) {
@@ -63,6 +81,7 @@ const FollowersCard = () => {
               user={user}
               usersYouMayKnow={usersYouMayKnow}
               setUsersYouMayKnow={setUsersYouMayKnow}
+              handleFollowers={handleFollowers}
             />
           )
         }

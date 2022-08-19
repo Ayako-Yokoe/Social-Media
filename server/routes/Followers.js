@@ -15,8 +15,9 @@ router.post("/", (req, res) => {
     [follower_id, person_id],
     (error, response) => {
       if (response && response.length) {
-        // res.json({ ...response[0], message: "success" })
-        res.json({ message: "success" })
+        res.json({ ...response[0] })
+        console.log("query response ", response)
+        // res.json({ message: "success" })
         //console.log("follower post response ", response)
       } else {
         res.json({ message: "Not Found" })
