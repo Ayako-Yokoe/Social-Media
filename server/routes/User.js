@@ -106,4 +106,38 @@ router.get("/", (req, res) => {
   })
 })
 
+// Handle the number of followers
+router.post("/followers", (req, res) => {
+  const { numberOfFollowers, id } = req.body
+  db.query(
+    "UPDATE User SET number_of_followers = ? WHERE id = ?",
+    [numberOfFollowers, id],
+    (error, response) => {
+      if (response) {
+        res.json({ id })
+      } else {
+        res.json({ message: "Update failed" })
+        console.log("post numberOfFollowers update error ", error)
+      }
+    }
+  )
+})
+
+// Handle the number of following
+router.post("/following", (req, res) => {
+  const { numberOfFollowing, id } = req.body
+  db.query(
+    "UPDATE User SET number_of_following = ? WHERE id = ?",
+    [numberOfFollowing, id],
+    (error, response) => {
+      if (response) {
+        res.json({ id })
+      } else {
+        res.json({ message: "Update failed" })
+        console.log("post numberOfFollowing update error ", error)
+      }
+    }
+  )
+})
+
 module.exports = router

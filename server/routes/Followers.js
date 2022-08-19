@@ -4,15 +4,15 @@ const db = require("../config/db.config")
 
 // Get all followers info
 router.post("/", (req, res) => {
-  const { follower_id, user_id } = req.body
+  const { follower_id, person_id } = req.body
 
-  if (!follower_id || !user_id) {
+  if (!follower_id || !person_id) {
     res.json({ message: "Not found" })
   }
 
   db.query(
-    "SELECT * FROM Follower WHERE follower_id = ? AND user_id = ?;",
-    [follower_id, user_id],
+    "SELECT * FROM Follower WHERE follower_id = ? AND person_id = ?;",
+    [follower_id, person_id],
     (error, response) => {
       if (response && response.length) {
         // res.json({ ...response[0], message: "success" })
@@ -28,18 +28,18 @@ router.post("/", (req, res) => {
 
 // Handle following button
 router.post("/create", (req, res) => {
-  const { follower_id, user_id } = req.body
+  const { follower_id, person_id } = req.body
 
-  if (!follower_id || !user_id) {
+  if (!follower_id || !person_id) {
     res.json({ message: "Not authorized" })
   }
-  const followers = [[follower_id, user_id]]
+  const followers = [[follower_id, person_id]]
   db.query(
-    "INSERT INTO Follower (follower_id, user_id) VALUES ?;",
+    "INSERT INTO Follower (follower_id, person_id) VALUES ?;",
     [followers],
     (error, response) => {
       if (response) {
-        res.json({ followerId: response.followerId, follower_id, user_id })
+        res.json({ followerId: response.followerId, follower_id, person_id })
       } else {
         res.json({ message: "Cannot create" })
         console.log("follower create error ", error)
@@ -50,15 +50,15 @@ router.post("/create", (req, res) => {
 
 // Delete following
 router.post("/delete", (req, res) => {
-  const { follower_id, user_id } = req.body
+  const { follower_id, person_id } = req.body
 
-  if (!follower_id || !user_id) {
+  if (!follower_id || !person_id) {
     res.json({ message: "Not authorized" })
   }
 
   db.query(
-    "DELETE FROM Follower WHERE follower_id = ? AND user_id = ?;",
-    [follower_id, user_id],
+    "DELETE FROM Follower WHERE follower_id = ? AND person_id = ?;",
+    [follower_id, person_id],
     (error, response) => {
       if (response) {
         //res.json({ post_id, user_id })
