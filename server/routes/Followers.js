@@ -14,14 +14,14 @@ router.post("/", (req, res) => {
     "SELECT * FROM Follower WHERE follower_id = ? AND person_id = ?;",
     [follower_id, person_id],
     (error, response) => {
+      //console.log("response ", response)
       if (response && response.length) {
-        res.json({ ...response[0] })
-        console.log("query response ", response)
+        res.json({ ...response[0], message: "success" })
         // res.json({ message: "success" })
         //console.log("follower post response ", response)
       } else {
         res.json({ message: "Not Found" })
-        //console.log("follower post error ", error)
+        console.log("follower post error ", error)
       }
     }
   )

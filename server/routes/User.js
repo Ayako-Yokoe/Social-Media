@@ -131,7 +131,8 @@ router.post("/following", (req, res) => {
     [numberOfFollowing, id],
     (error, response) => {
       if (response) {
-        res.json({ id })
+        //res.json({ id })
+        res.json({ numberOfFollowing })
       } else {
         res.json({ message: "Update failed" })
         console.log("post numberOfFollowing update error ", error)

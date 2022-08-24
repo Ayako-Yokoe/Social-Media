@@ -1,16 +1,17 @@
-import React, { useContext, useState, useEffect } from "react"
+import React, { useContext, useState, useEffect, useCallback } from "react"
 import { followers } from "../FollowersData"
 import "./FollowersCard.css"
 import Context from "../../context"
 import axios from "axios"
 import FollowUsers from "../FollowUsers/FollowUsers"
 
+// hasFollowed => db default false
+
 const FollowersCard = () => {
   const { setIsLoading, user } = useContext(Context)
   const [usersYouMayKnow, setUsersYouMayKnow] = useState([])
 
-  // is there hasFollowed?
-  console.log("usersYouMayKnow hasFollowed ", usersYouMayKnow)
+  console.log("usersYouMayKnow ", usersYouMayKnow)
 
   const loadAllUsers = async () => {
     setIsLoading(true)
@@ -20,53 +21,64 @@ const FollowersCard = () => {
     setIsLoading(false)
   }
 
-  const handleFollowers = async (id) => {
-    const usersYouFollow = usersYouMayKnow.filter((ele) => ele.id === id)
-    if (!user.id || !usersYouFollow[0]?.id) {
-      return
-    }
+  // const handleFollowers = async (id) => {
+  //   if (!id) return
+  //   const usersYouFollow = usersYouMayKnow.filter((ele) => ele.id === id)
+  //   console.log("usersYouFollow ", usersYouFollow)
 
-    try {
-      setIsLoading(true)
-      const response = await axios.post("http://localhost:3001/api/followers", {
-        follower_id: user.id,
-        person_id: usersYouFollow[0]?.id,
-      })
+  //   if (!user.id || !usersYouFollow[0].id) {
+  //     return
+  //   }
 
-      // setUsersYouMayKnow((prevUserYouMayKnow) => ({
-      //   ...usersYouMayKnow,
-      //   hasFollowed:
-      //     response && response.data && response.data.message ? false : true,
-      // }))
+  //   if (user.id && usersYouFollow[0].id) {
+  //     try {
+  //       setIsLoading(true)
+  //       const response = await axios.post(
+  //         "http://localhost:3001/api/followers",
+  //         {
+  //           follower_id: user.id,
+  //           person_id: usersYouFollow[0].id,
+  //         }
+  //       )
+  //       // setUsersYouMayKnow((prevUserYouMayKnow) => ({
+  //       //   ...usersYouMayKnow,
+  //       //   hasFollowed:
+  //       //     response && response.data && response.data.message ? false : true,
+  //       // }))
 
-      // const clickFollowed = usersYouMayKnow.filter(
-      //   (ele) => ele.id === response.person_id
-      // )
-      const newUsersYouMayKnow = usersYouMayKnow.map((ele) => {
-        console.log("response.person_id ", response.data.person_id)
-        console.log("ele.id ", ele.id)
-        if (ele.id == response.data.person_id) {
-          console.log("ele.id ", ele.id)
-          console.log("ele ", ele)
-          return { ...ele, handleFollow: response.data ? false : true }
-        }
-        return { ...ele }
-      })
+  //       // const clickFollowed = usersYouMayKnow.filter(
+  //       //   (ele) => ele.id === response.person_id
+  //       // )
+  //       const newUsersYouMayKnow = usersYouMayKnow.map((ele) => {
+  //         if (ele.id == response.data.person_id) {
+  //           return {
+  //             ...ele,
+  //             hasFollowed:
+  //               response && response.data && response.data.message
+  //                 ? false
+  //                 : true,
+  //           }
+  //         }
 
-      setUsersYouMayKnow(newUsersYouMayKnow)
+  //         return { ...ele }
+  //       })
 
-      // console.log("hasFollowed ", usersYouMayKnow)
+  //       console.log("newUsersYouMayKnow ", newUsersYouMayKnow)
 
-      setIsLoading(false)
-    } catch (error) {
-      console.log(error)
-      setIsLoading(false)
-    }
-  }
+  //       // setUsersYouMayKnow(newUsersYouMayKnow)
+  //       setUsersYouMayKnow([...newUsersYouMayKnow])
+
+  //       setIsLoading(false)
+  //     } catch (error) {
+  //       console.log(error)
+  //       setIsLoading(false)
+  //     }
+  //   }
+  // }
 
   useEffect(() => {
     loadAllUsers()
-    handleFollowers()
+    //handleFollowers()
   }, [setIsLoading, setUsersYouMayKnow])
 
   return (
@@ -78,10 +90,11 @@ const FollowersCard = () => {
             <FollowUsers
               person={person}
               key={person.id}
-              user={user}
+              // setIsLoading={setIsLoading}
+              // user={user}
               usersYouMayKnow={usersYouMayKnow}
               setUsersYouMayKnow={setUsersYouMayKnow}
-              handleFollowers={handleFollowers}
+              //handleFollowers={handleFollowers}
             />
           )
         }
