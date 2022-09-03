@@ -10,6 +10,8 @@ const bcrypt = require("bcrypt")
 const { response } = require("express")
 const saltRound = 10
 
+// Create controller, model, and router to organize
+
 router.post("/register", (req, res) => {
   const username = req.body.username
   const password = req.body.password
@@ -80,14 +82,15 @@ router.post("/login", (req, res) => {
 router.get("/:id", (req, res) => {
   const userId = req.params.id
   if (!userId) {
-    res.json({ message: "Cannot get user information" })
+    res.json({ message: "Cannot get user information. Please try again." })
   }
   db.query("SELECT * FROM User WHERE id = ?;", [userId], (error, results) => {
     if (results && results.length > 0) {
       res.json(results[0])
+      // ? res.json(results)
       // console.log("results ", results[0])
     } else {
-      res.json({ message: "Cannot get user information" })
+      res.json({ message: "Cannot get user information. Please try again." })
       console.log(error)
     }
   })
@@ -116,7 +119,7 @@ router.post("/followers", (req, res) => {
       if (response) {
         res.json({ id })
       } else {
-        res.json({ message: "Update failed" })
+        res.json({ message: "Update failed. Please try again." })
         console.log("post numberOfFollowers update error ", error)
       }
     }
@@ -134,7 +137,26 @@ router.post("/following", (req, res) => {
         //res.json({ id })
         res.json({ numberOfFollowing })
       } else {
-        res.json({ message: "Update failed" })
+        res.json({ message: "Update failed. Please try again." })
+        console.log("post numberOfFollowing update error ", error)
+      }
+    }
+  )
+})
+
+// Connect to the front end
+// Handle the number of posts
+router.post("/posts", (req, res) => {
+  const { numberOfPosts } = req.body
+  db.query(
+    "UPDATE User SET number_of_posts = ? WHERE id = ?",
+    [numberOfPosts, id],
+    (error, response) => {
+      if (response) {
+        //res.json({ id })
+        res.json({ numberOfPosts })
+      } else {
+        res.json({ message: "Update failed. Please try again." })
         console.log("post numberOfFollowing update error ", error)
       }
     }

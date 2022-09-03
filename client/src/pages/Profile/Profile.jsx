@@ -5,6 +5,8 @@ import ProfileLeft from "../../components/ProfileLeft/ProfileLeft"
 import RightSide from "../../components/RightSide/RightSide"
 import "./Profile.css"
 
+//  <ProfileCard location = 'profilePage'/>
+
 const Profile = () => {
   return (
     <div className="profile">

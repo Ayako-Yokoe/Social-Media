@@ -4,6 +4,7 @@ import "./Register.css"
 
 import { register } from "../../service/auth.service"
 
+// Refactor using initial state
 const Register = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")

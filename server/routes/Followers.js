@@ -61,8 +61,10 @@ router.post("/delete", (req, res) => {
     "DELETE FROM Follower WHERE follower_id = ? AND person_id = ?;",
     [follower_id, person_id],
     (error, response) => {
-      if (response) {
+      //if (response) {
+      if (response && response.affectedRows) {
         //res.json({ post_id, user_id })
+        //res.json({ follower_id, person_id})
         res.json({ message: "Delete successfully" })
       } else {
         res.json({ message: "Cannot delete" })

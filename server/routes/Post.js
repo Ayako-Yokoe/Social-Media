@@ -2,6 +2,7 @@ const express = require("express")
 const router = express.Router()
 const db = require("../config/db.config")
 
+// Create a new post
 router.post("/", (req, res) => {
   const { post, image, author } = req.body
   const created_at = new Date()
@@ -20,13 +21,14 @@ router.post("/", (req, res) => {
           created_at,
         })
       } else {
-        res.json({ message: "cannot upload your post" })
+        res.json({ message: "Cannot upload your post, please try again." })
         console.log("post insert new post error ", error)
       }
     }
   )
 })
 
+// Get all posts
 router.get("/", (req, res) => {
   db.query("SELECT * FROM Post ORDER BY created_at DESC", (error, results) => {
     if (error) {
@@ -36,6 +38,9 @@ router.get("/", (req, res) => {
   })
 })
 
+// ??  app.get('/posts/:id', (req, res) => {
+
+// Handle like/dislike reactions
 router.post("/reactions", (req, res) => {
   const { numberOfReactions, id } = req.body
   db.query(
@@ -45,7 +50,7 @@ router.post("/reactions", (req, res) => {
       if (response) {
         res.json({ id })
       } else {
-        res.json({ message: "Update failed" })
+        res.json({ message: "Update failed. Please try again." })
         console.log("post reactions update error ", error)
       }
     }

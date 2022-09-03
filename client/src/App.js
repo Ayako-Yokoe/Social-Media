@@ -1,5 +1,5 @@
 import "./App.css"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 import Navbar from "./components/Navbar/Navbar"
 import Home from "./pages/Home/Home"
@@ -11,16 +11,36 @@ import Auth from "./pages/Auth"
 import { getCurrentUser } from "./service/auth.service"
 import Context from "./context"
 
+// loading (component)
+// private route (component)
+
+// const [selectedPost, setSelectedPost] = useState(false);
+// <Context.Provider value={{ ... selectedPost, setSelectedPost }}>
+
 function App() {
   const currentUser = getCurrentUser()
 
   const [isLoading, setIsLoading] = useState(false)
-
-  // may not need, almost the same as currentUser
   const [user, setUser] = useState(currentUser)
+  const [hasNewPost, setHasNewPost] = useState(false)
+  //const [selectedPost, setSelectedPost] = useState(false)
+
+  // Check if it's really needed
+  useEffect(() => {
+    getCurrentUser()
+  }, [])
 
   return (
-    <Context.Provider value={{ isLoading, setIsLoading, user, setUser }}>
+    <Context.Provider
+      value={{
+        isLoading,
+        setIsLoading,
+        user,
+        setUser,
+        hasNewPost,
+        setHasNewPost,
+      }}
+    >
       <BrowserRouter>
         <div className="App">
           <div className="blur" style={{ top: "-18%", right: "0" }}></div>
@@ -31,10 +51,15 @@ function App() {
         </div>
         {/* <Navbar /> */}
 
+        {/* Create Pivate Route */}
         <Routes>
           <Route path="/" element={currentUser ? <Home /> : <Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route
+            path="/profile/:id"
+            element={currentUser ? <Profile /> : <Register />}
+          />
 
           <Route
             path="/upload"

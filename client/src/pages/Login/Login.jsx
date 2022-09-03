@@ -4,6 +4,8 @@ import "./Login.css"
 
 import { login } from "../../service/auth.service"
 
+// Refactor using initial state
+
 const Login = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
