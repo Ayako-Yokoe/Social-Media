@@ -16,83 +16,100 @@ const PostShare = () => {
   const [previewImage, setPreviewImage] = useState(null)
   const imageRef = useRef()
   // const user = getCurrentUser()
-  const { currentUser, setIsLoading, setHasNewPost } = useContext(Context)
+  const { user, setIsLoading, setHasNewPost } = useContext(Context)
+
+  const [uploadedPostImage, setUploadedPostImage] = useState(null)
 
   const onImageChange = (e) => {
-    setImage(e.target.files)
-    if (e.target.files && e.target.files[0]) {
-      let img = e.target.files[0]
-      setPreviewImage({
-        image: URL.createObjectURL(img),
-      })
+    const reader = new FileReader()
+    if (e.target.files[0]) {
+      setUploadedPostImage(e.target.files[0])
+      reader.readAsDataURL(e.target.files[0])
     }
+    reader.onload = (readerEvent) => {
+      setImage(readerEvent.target.result)
+    }
+
+    // if (e.target.files && e.target.files[0]) {
+    //   let img = e.target.files[0]
+    //   setPreviewImage({
+    //     image: URL.createObjectURL(img),
+    //   })
+    // }
   }
 
+  // old
+  // const onImageChange = (e) => {
+  //   setImage(e.target.files)
+  //   if (e.target.files && e.target.files[0]) {
+  //     let img = e.target.files[0]
+  //     setPreviewImage({
+  //       image: URL.createObjectURL(img),
+  //     })
+  //   }
+  // }
+
   const updateNumberOfPosts = async () => {
-    return await axios.post("http://localhost:8080/user/posts", {
-      id: currentUser.id,
-      numberOfPosts: currentUser.number_of_posts
-        ? currentUser.number_of_posts + 1
-        : 1,
+    return await axios.post("http://localhost:3001/api/user/posts", {
+      id: user.id,
+      numberOfPosts: user.number_of_posts ? user.number_of_posts + 1 : 1,
     })
   }
 
-  const upload = () => {
+  const upload = async () => {
     setIsLoading(true)
 
-    const formData = new FormData()
-    formData.append("file", image[0])
-    formData.append("upload_preset", process.env.REACT_APP_FORM_DATA_KEY)
+    // const formData = new FormData()
+    // formData.append("post", newPost)
+    // formData.append("image", uploadedPostImage)
+    // formData.append("author", user.token)
 
-    axios
-      .post(process.env.REACT_APP_CLOUDINARY_URL, formData)
-      .then((res) => {
-        const fileName = res.data.public_id
+    // const response = await axios.post(
+    //   "http://localhost:3001/api/posts",
+    //   formData
+    // )
 
-        console.log("1")
+    const response = axios.post("http://localhost:3001/api/posts", {
+      post: newPost,
+      //image: uploadedPostImage, console => {}
+      image: image,
+      author: user.token,
+    })
 
-        axios.post("http://localhost:3001/api/posts", {
-          post: newPost,
-          image: fileName,
-          author: currentUser.token,
-        })
-
-        console.log("2")
-      })
-      .then((res) => {
-        if (res && res.data && res.data.message) {
-          console.log(res.data.message)
-        } else {
-          updateNumberOfPosts()
-          setHasNewPost(true)
-          console.log("Uploaded successfully")
-        }
-        setIsLoading(false)
-        console.log("go back to home page")
-      })
-
-    // may not need because of the link
-    setPreviewImage(null)
+    if (response && response.data && response.data.message) {
+      alert(response.data.message)
+    } else {
+      await updateNumberOfPosts()
+      setHasNewPost(true)
+      alert("Your post was uploaded successfully.")
+    }
+    setIsLoading(false)
   }
+
   // const upload = () => {
+  //   setIsLoading(true)
   //   const formData = new FormData()
   //   formData.append("file", image[0])
   //   formData.append("upload_preset", process.env.REACT_APP_FORM_DATA_KEY)
-
-  //   setIsLoading(true)
-
   //   axios
-  //     .post(process.env.REACT_APP_CLOUDINARY_URL, formData)
+  //     //.post(process.env.REACT_APP_CLOUDINARY_URL, formData)
   //     .then((res) => {
   //       const fileName = res.data.public_id
-
-  //       axiox.post("http://localhost:3001/api/posts", {
+  //       axios.post("http://localhost:3001/api/posts", {
   //         post: newPost,
   //         image: fileName,
   //         author: user.token,
   //       })
   //     })
-  //     .then(() => {
+  //     .then((res) => {
+  //       if (res && res.data && res.data.message) {
+  //         console.log(res.data.message)
+  //       } else {
+  //         updateNumberOfPosts()
+  //         setHasNewPost(true)
+  //         console.log("Uploaded successfully")
+  //       }
+  //       setIsLoading(false)
   //       console.log("go back to home page")
   //     })
 
@@ -139,7 +156,7 @@ const PostShare = () => {
           </div>
         </div>
 
-        {image && (
+        {/* {image && (
           <div className="previewImage">
             <ClearIcon
               onClick={() => {
@@ -149,7 +166,7 @@ const PostShare = () => {
             />
             <img src={previewImage?.image} alt="" />
           </div>
-        )}
+        )} */}
       </div>
     </div>
   )

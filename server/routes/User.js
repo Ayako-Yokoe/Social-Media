@@ -147,7 +147,7 @@ router.post("/following", (req, res) => {
 // Connect to the front end
 // Handle the number of posts
 router.post("/posts", (req, res) => {
-  const { numberOfPosts } = req.body
+  const { numberOfPosts, id } = req.body
   db.query(
     "UPDATE User SET number_of_posts = ? WHERE id = ?",
     [numberOfPosts, id],
@@ -155,6 +155,7 @@ router.post("/posts", (req, res) => {
       if (response) {
         //res.json({ id })
         res.json({ numberOfPosts })
+        console.log("numberOfPosts success")
       } else {
         res.json({ message: "Update failed. Please try again." })
         console.log("post numberOfFollowing update error ", error)
