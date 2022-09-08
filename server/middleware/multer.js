@@ -1,5 +1,7 @@
 const multer = require("multer")
 
+// file name "public" -> "../public" ??
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "public")
@@ -12,10 +14,12 @@ const storage = multer.diskStorage({
   },
 })
 
-// const upload = multer({ storage: storage }).single("post_image")
-const upload = (req, res, next) => {
-  multer({ storage: storage }).single("post_image")
-  next()
-}
+const upload = multer({ storage: storage }).single("image")
+
+// mistake!!!!
+// const upload = (req, res, next) => {
+//   multer({ storage: storage }).single("image")
+//   next()
+// }
 
 module.exports = upload

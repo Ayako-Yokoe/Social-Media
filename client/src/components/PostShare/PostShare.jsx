@@ -8,17 +8,13 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth"
 import ClearIcon from "@mui/icons-material/Clear"
 import Context from "../../context"
 
-//import { getCurrentUser } from "../../service/auth.service"
-
 const PostShare = () => {
   const [newPost, setNewPost] = useState("")
-  const [image, setImage] = useState(null)
-  const [previewImage, setPreviewImage] = useState(null)
+  const [image, setImage] = useState(null) // URL + can be displayed as a list , preview
+  const [uploadedPostImage, setUploadedPostImage] = useState(null) // image
+  //const [previewImage, setPreviewImage] = useState(null)
   const imageRef = useRef()
-  // const user = getCurrentUser()
   const { user, setIsLoading, setHasNewPost } = useContext(Context)
-
-  const [uploadedPostImage, setUploadedPostImage] = useState(null)
 
   const onImageChange = (e) => {
     const reader = new FileReader()
@@ -29,25 +25,7 @@ const PostShare = () => {
     reader.onload = (readerEvent) => {
       setImage(readerEvent.target.result)
     }
-
-    // if (e.target.files && e.target.files[0]) {
-    //   let img = e.target.files[0]
-    //   setPreviewImage({
-    //     image: URL.createObjectURL(img),
-    //   })
-    // }
   }
-
-  // old
-  // const onImageChange = (e) => {
-  //   setImage(e.target.files)
-  //   if (e.target.files && e.target.files[0]) {
-  //     let img = e.target.files[0]
-  //     setPreviewImage({
-  //       image: URL.createObjectURL(img),
-  //     })
-  //   }
-  // }
 
   const updateNumberOfPosts = async () => {
     return await axios.post("http://localhost:3001/api/user/posts", {
@@ -59,22 +37,16 @@ const PostShare = () => {
   const upload = async () => {
     setIsLoading(true)
 
-    // const formData = new FormData()
-    // formData.append("post", newPost)
-    // formData.append("image", uploadedPostImage)
-    // formData.append("author", user.token)
+    const formData = new FormData()
+    formData.append("post", newPost)
+    formData.append("image", uploadedPostImage)
+    formData.append("author", user.token)
 
-    // const response = await axios.post(
-    //   "http://localhost:3001/api/posts",
-    //   formData
-    // )
-
-    const response = axios.post("http://localhost:3001/api/posts", {
-      post: newPost,
-      //image: uploadedPostImage, console => {}
-      image: image,
-      author: user.token,
-    })
+    const response = await axios.post(
+      "http://localhost:3001/api/posts",
+      formData,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    )
 
     if (response && response.data && response.data.message) {
       alert(response.data.message)
@@ -83,6 +55,10 @@ const PostShare = () => {
       setHasNewPost(true)
       alert("Your post was uploaded successfully.")
     }
+
+    //
+    setNewPost("")
+    setImage(null)
     setIsLoading(false)
   }
 
@@ -156,17 +132,17 @@ const PostShare = () => {
           </div>
         </div>
 
-        {/* {image && (
+        {image && (
           <div className="previewImage">
             <ClearIcon
               onClick={() => {
-                setPreviewImage(null)
+                //setPreviewImage(null)
                 setImage(null)
               }}
             />
-            <img src={previewImage?.image} alt="" />
+            <img src={image ? image : null} alt="" />
           </div>
-        )} */}
+        )}
       </div>
     </div>
   )
