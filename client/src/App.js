@@ -8,6 +8,7 @@ import Register from "./pages/Register/Register"
 import Upload from "./pages/Upload"
 import Profile from "./pages/Profile/Profile"
 import Auth from "./pages/Auth"
+import Loading from "./components/Common/Loading"
 import { getCurrentUser } from "./service/auth.service"
 import Context from "./context"
 
@@ -66,6 +67,7 @@ function App() {
             element={currentUser ? <Upload /> : <Register />}
           />
         </Routes>
+        {isLoading && <Loading />}
       </BrowserRouter>
     </Context.Provider>
   )

@@ -13,13 +13,31 @@ const FollowersCard = () => {
 
   console.log("usersYouMayKnow ", usersYouMayKnow)
 
-  const loadAllUsers = async () => {
-    setIsLoading(true)
-    axios.get("http://localhost:3001/api/user").then((res) => {
-      setUsersYouMayKnow(res.data)
-    })
-    setIsLoading(false)
-  }
+  // const loadAllUsers = async () => {
+  //   setIsLoading(true)
+  //   axios.get("http://localhost:3001/api/user").then((res) => {
+  //     setUsersYouMayKnow(res.data)
+  //   })
+  //   setIsLoading(false)
+  // }
+
+  // Start from here
+  // const loadUserFollower = async () => {
+  //   const { id } = user;
+  //   const { post_created_by } = selectedPost;
+  //   if (!id || !post_created_by) {
+  //     return;
+  //   }
+  //   try {
+  //     setIsLoading(true);
+  //     const url = 'http://localhost:8080/followers/get';
+  //     const response = await axios.post(url, { followerId: id, userId: post_created_by });
+  //     setPost(prevPost => ({ ...prevPost, hasFollowed: response && response.data && response.data.message ? false : true }));
+  //     setIsLoading(false);
+  //   } catch (error) {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   // const handleFollowers = async (id) => {
   //   if (!id) return
@@ -77,7 +95,7 @@ const FollowersCard = () => {
   // }
 
   useEffect(() => {
-    loadAllUsers()
+    //loadAllUsers()
     //handleFollowers()
   }, [setIsLoading, setUsersYouMayKnow])
 
