@@ -11,17 +11,16 @@ const FollowersCard = () => {
   const { setIsLoading, user } = useContext(Context)
   const [usersYouMayKnow, setUsersYouMayKnow] = useState([])
 
-  console.log("usersYouMayKnow ", usersYouMayKnow)
+  console.log("usersYouMayKnow parent ", usersYouMayKnow)
 
-  // const loadAllUsers = async () => {
-  //   setIsLoading(true)
-  //   axios.get("http://localhost:3001/api/user").then((res) => {
-  //     setUsersYouMayKnow(res.data)
-  //   })
-  //   setIsLoading(false)
-  // }
+  const loadAllUsers = async () => {
+    setIsLoading(true)
+    axios.get("http://localhost:3001/api/user").then((res) => {
+      setUsersYouMayKnow(res.data)
+    })
+    setIsLoading(false)
+  }
 
-  // Start from here
   // const loadUserFollower = async () => {
   //   const { id } = user;
   //   const { post_created_by } = selectedPost;
@@ -95,7 +94,7 @@ const FollowersCard = () => {
   // }
 
   useEffect(() => {
-    //loadAllUsers()
+    loadAllUsers()
     //handleFollowers()
   }, [setIsLoading, setUsersYouMayKnow])
 

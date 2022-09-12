@@ -12,7 +12,6 @@ import Loading from "./components/Common/Loading"
 import { getCurrentUser } from "./service/auth.service"
 import Context from "./context"
 
-// loading (component)
 // private route (component)
 
 // const [selectedPost, setSelectedPost] = useState(false);
