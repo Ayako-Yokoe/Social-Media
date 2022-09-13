@@ -2,11 +2,9 @@ import React, { useContext, useState, useEffect } from "react"
 import axios from "axios"
 import Context from "../../context"
 
-const FollowUsers = ({ person, usersYouMayKnow, setUsersYouMayKnow }) => {
+const FollowUsers = ({ person, loadFollowers }) => {
   const { setIsLoading, user } = useContext(Context)
   const [currentUser, setCurrentUser] = useState(null)
-
-  console.log("child usersYouMayKnow ", usersYouMayKnow)
 
   useEffect(() => {
     setIsLoading(true)
@@ -21,12 +19,14 @@ const FollowUsers = ({ person, usersYouMayKnow, setUsersYouMayKnow }) => {
   }, [setIsLoading, setCurrentUser])
 
   const removeFollow = async () => {
+    console.log("remove follow")
     return await axios.post("http://localhost:3001/api/followers/delete", {
       follower_id: user.id,
       person_id: person.id,
     })
   }
   const follow = async () => {
+    console.log("create follow")
     return await axios.post("http://localhost:3001/api/followers/create", {
       follower_id: user.id,
       person_id: person.id,
@@ -45,107 +45,8 @@ const FollowUsers = ({ person, usersYouMayKnow, setUsersYouMayKnow }) => {
     })
   }
 
-  //
-  const handleFollowers = async (id) => {
-    if (!id) return
-    //const usersYouFollow = usersYouMayKnow.filter((ele) => ele.id === id)
-    //console.log("usersYouFollow ", usersYouFollow)
-
-    // if (!user.id || !usersYouFollow[0].id) {
-    //   return
-    // }
-
-    //if (user.id && usersYouFollow[0].id) {
-    if (user.id && id) {
-      try {
-        setIsLoading(true)
-        const response = await axios.post(
-          "http://localhost:3001/api/followers",
-          {
-            follower_id: user.id,
-            person_id: id,
-          }
-        )
-
-        // setUsersYouMayKnow((prevUserYouMayKnow) => ({
-        //   ...prevUserYouMayKnow,
-        //   hasFollowed:
-        //     response && response.data && response.data.message ? false : true,
-        // }))
-
-        console.log("response ", response)
-        console.log("response.data.person_id ", response.data.person_id)
-
-        let temp = { ...usersYouMayKnow }
-
-        console.log("temp1 ", temp)
-
-        let isFollow = {
-          ...usersYouMayKnow[response.data.person_id],
-          hasFollowed: response.data.person_id ? false : true,
-        }
-        temp[response.data.person_id] = isFollow
-
-        console.log("temp2 ", temp)
-
-        // let temp = {
-        //   ...usersYouMayKnow[id],
-        //   hasFollowed:
-        //     response && response.data && response.data.message ? false : true,
-        // }
-
-        // let newUsersYouMayKnow = {
-        //   ...usersYouMayKnow,
-        //   temp,
-        // }
-
-        // console.log("repsonse temp ", temp)
-        // console.log("repsonse newUsersYouMayKnow ", newUsersYouMayKnow)
-
-        // console.log("response usersYouMayKnow ", usersYouMayKnow)
-        // setUsersYouMayKnow(usersYouMayKnow)
-
-        // const clickFollowed = usersYouMayKnow.filter(
-        //   (ele) => ele.id === response.person_id
-        // )
-
-        //console.log("response ", response)
-
-        // const newUsersYouMayKnow = usersYouMayKnow.map((ele) => {
-        //   if (ele.id == response.data.person_id) {
-        //     console.log("if")
-        //     return {
-        //       ...ele,
-        //       hasFollowed:
-        //         response && response.data && response.data.message
-        //           ? false
-        //           : true,
-        //     }
-        //   } else {
-        //     console.log("else")
-        //     return { ...ele }
-        //   }
-        // })
-        //console.log("newUsersYouMayKnow ", newUsersYouMayKnow)
-
-        //setUsersYouMayKnow(newUsersYouMayKnow)
-        //setUsersYouMayKnow([...newUsersYouMayKnow])
-
-        setIsLoading(false)
-      } catch (error) {
-        console.log(error)
-        setIsLoading(false)
-      }
-    }
-  }
-  //
-
   const toggleFollowers = async () => {
-    //console.log("toggleFollowers id ", person.id)
-    await handleFollowers(person.id)
-    //console.log("1")
-
-    console.log("usersYouMayKnow toggle ", usersYouMayKnow)
+    await loadFollowers(person.id)
 
     try {
       if (person.hasFollowed) {
@@ -187,7 +88,7 @@ const FollowUsers = ({ person, usersYouMayKnow, setUsersYouMayKnow }) => {
         </div>
 
         <button className="button fc-button" onClick={toggleFollowers}>
-          Follow
+          {person.hasFollowed ? "Unfollow" : "Follow"}
         </button>
       </div>
     </div>

@@ -14,11 +14,8 @@ router.post("/", (req, res) => {
     "SELECT * FROM Follower WHERE follower_id = ? AND person_id = ?;",
     [follower_id, person_id],
     (error, response) => {
-      //console.log("response ", response)
       if (response && response.length) {
         res.json({ ...response[0], message: "success" })
-        // res.json({ message: "success" })
-        //console.log("follower post response ", response)
       } else {
         res.json({ message: "Not Found" })
         console.log("follower post error ", error)
@@ -64,10 +61,7 @@ router.post("/delete", (req, res) => {
     "DELETE FROM Follower WHERE follower_id = ? AND person_id = ?;",
     [follower_id, person_id],
     (error, response) => {
-      //if (response) {
       if (response && response.affectedRows) {
-        //res.json({ post_id, user_id })
-        //res.json({ follower_id, person_id})
         res.json({ message: "Delete successfully" })
       } else {
         res.json({ message: "Cannot delete" })

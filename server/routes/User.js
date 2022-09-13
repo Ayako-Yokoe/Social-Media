@@ -7,7 +7,6 @@ const jwt = require("jsonwebtoken")
 const authConfig = require("../config/auth.config")
 const verifyToken = require("../middleware/verifyToken")
 const bcrypt = require("bcrypt")
-const { response } = require("express")
 const saltRound = 10
 
 // Create controller, model, and router to organize
@@ -87,8 +86,6 @@ router.get("/:id", (req, res) => {
   db.query("SELECT * FROM User WHERE id = ?;", [userId], (error, results) => {
     if (results && results.length > 0) {
       res.json(results[0])
-      // ? res.json(results)
-      // console.log("results ", results[0])
     } else {
       res.json({ message: "Cannot get user information. Please try again." })
       console.log(error)
@@ -101,7 +98,6 @@ router.get("/", (req, res) => {
   db.query("SELECT * FROM User;", (error, results) => {
     if (results) {
       res.json(results)
-      // console.log("results ", results[0])
     } else {
       res.json({ message: "Cannot get user information" })
       console.log(error)
@@ -138,7 +134,6 @@ router.post("/following", (req, res) => {
     [numberOfFollowing, id],
     (error, response) => {
       if (response) {
-        //res.json({ id })
         res.json({ numberOfFollowing })
       } else {
         res.json({ message: "Update failed. Please try again." })

@@ -5,13 +5,9 @@ import Context from "../../context"
 import axios from "axios"
 import FollowUsers from "../FollowUsers/FollowUsers"
 
-// hasFollowed => db default false
-
 const FollowersCard = () => {
   const { setIsLoading, user } = useContext(Context)
   const [usersYouMayKnow, setUsersYouMayKnow] = useState([])
-
-  console.log("usersYouMayKnow parent ", usersYouMayKnow)
 
   const loadAllUsers = async () => {
     setIsLoading(true)
@@ -21,81 +17,41 @@ const FollowersCard = () => {
     setIsLoading(false)
   }
 
-  // const loadUserFollower = async () => {
-  //   const { id } = user;
-  //   const { post_created_by } = selectedPost;
-  //   if (!id || !post_created_by) {
-  //     return;
-  //   }
-  //   try {
-  //     setIsLoading(true);
-  //     const url = 'http://localhost:8080/followers/get';
-  //     const response = await axios.post(url, { followerId: id, userId: post_created_by });
-  //     setPost(prevPost => ({ ...prevPost, hasFollowed: response && response.data && response.data.message ? false : true }));
-  //     setIsLoading(false);
-  //   } catch (error) {
-  //     setIsLoading(false);
-  //   }
-  // };
+  const loadFollowers = async (id) => {
+    if (!id) return
 
-  // const handleFollowers = async (id) => {
-  //   if (!id) return
-  //   const usersYouFollow = usersYouMayKnow.filter((ele) => ele.id === id)
-  //   console.log("usersYouFollow ", usersYouFollow)
+    if (user.id && id) {
+      try {
+        setIsLoading(true)
+        const response = await axios.post(
+          "http://localhost:3001/api/followers",
+          {
+            follower_id: user.id,
+            person_id: id,
+          }
+        )
 
-  //   if (!user.id || !usersYouFollow[0].id) {
-  //     return
-  //   }
+        let updatedUsersYouMayKnow = usersYouMayKnow.map((person) =>
+          person.id === id
+            ? {
+                ...person,
+                hasFollowed: response && response.data.person_id ? false : true,
+              }
+            : person
+        )
 
-  //   if (user.id && usersYouFollow[0].id) {
-  //     try {
-  //       setIsLoading(true)
-  //       const response = await axios.post(
-  //         "http://localhost:3001/api/followers",
-  //         {
-  //           follower_id: user.id,
-  //           person_id: usersYouFollow[0].id,
-  //         }
-  //       )
-  //       // setUsersYouMayKnow((prevUserYouMayKnow) => ({
-  //       //   ...usersYouMayKnow,
-  //       //   hasFollowed:
-  //       //     response && response.data && response.data.message ? false : true,
-  //       // }))
-
-  //       // const clickFollowed = usersYouMayKnow.filter(
-  //       //   (ele) => ele.id === response.person_id
-  //       // )
-  //       const newUsersYouMayKnow = usersYouMayKnow.map((ele) => {
-  //         if (ele.id == response.data.person_id) {
-  //           return {
-  //             ...ele,
-  //             hasFollowed:
-  //               response && response.data && response.data.message
-  //                 ? false
-  //                 : true,
-  //           }
-  //         }
-
-  //         return { ...ele }
-  //       })
-
-  //       console.log("newUsersYouMayKnow ", newUsersYouMayKnow)
-
-  //       // setUsersYouMayKnow(newUsersYouMayKnow)
-  //       setUsersYouMayKnow([...newUsersYouMayKnow])
-
-  //       setIsLoading(false)
-  //     } catch (error) {
-  //       console.log(error)
-  //       setIsLoading(false)
-  //     }
-  //   }
-  // }
+        setUsersYouMayKnow(updatedUsersYouMayKnow)
+        setIsLoading(false)
+      } catch (error) {
+        console.log(error)
+        setIsLoading(false)
+      }
+    }
+  }
 
   useEffect(() => {
     loadAllUsers()
-    //handleFollowers()
+    loadFollowers()
   }, [setIsLoading, setUsersYouMayKnow])
 
   return (
@@ -107,11 +63,7 @@ const FollowersCard = () => {
             <FollowUsers
               person={person}
               key={person.id}
-              // setIsLoading={setIsLoading}
-              // user={user}
-              usersYouMayKnow={usersYouMayKnow}
-              setUsersYouMayKnow={setUsersYouMayKnow}
-              //handleFollowers={handleFollowers}
+              loadFollowers={loadFollowers}
             />
           )
         }
