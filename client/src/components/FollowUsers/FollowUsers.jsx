@@ -6,7 +6,7 @@ const FollowUsers = ({ person, loadFollowers }) => {
   const { setIsLoading, user } = useContext(Context)
   const [currentUser, setCurrentUser] = useState(null)
 
-  useEffect(() => {
+  const loadUserInfo = () => {
     setIsLoading(true)
     try {
       axios.get(`http://localhost:3001/api/user/${user.id}`).then((res) => {
@@ -16,17 +16,19 @@ const FollowUsers = ({ person, loadFollowers }) => {
       console.log(error)
     }
     setIsLoading(false)
-  }, [setIsLoading, setCurrentUser])
+  }
+
+  useEffect(() => {
+    loadUserInfo()
+  }, [setIsLoading, user, currentUser, setCurrentUser])
 
   const removeFollow = async () => {
-    console.log("remove follow")
     return await axios.post("http://localhost:3001/api/followers/delete", {
       follower_id: user.id,
       person_id: person.id,
     })
   }
   const follow = async () => {
-    console.log("create follow")
     return await axios.post("http://localhost:3001/api/followers/create", {
       follower_id: user.id,
       person_id: person.id,
@@ -56,9 +58,9 @@ const FollowUsers = ({ person, loadFollowers }) => {
           //(person.number_of_followers = 0)
         )
         await updateNumberOfFollowing(
-          currentUser.number_of_following == 1
-            ? 0
-            : user.number_of_following - 1
+          currentUser.number_of_following
+            ? currentUser.number_of_following - 1
+            : 0
           //(user.number_of_following = 0)
         )
       } else {
@@ -68,7 +70,9 @@ const FollowUsers = ({ person, loadFollowers }) => {
           //(person.number_of_followers = 0)
         )
         await updateNumberOfFollowing(
-          currentUser.number_of_following + 1
+          currentUser.number_of_following
+            ? currentUser.number_of_following + 1
+            : 1
           //(user.number_of_following = 0)
         )
       }

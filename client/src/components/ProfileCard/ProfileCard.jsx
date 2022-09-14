@@ -5,21 +5,24 @@ import axios from "axios"
 
 const ProfileCard = () => {
   const { setIsLoading, user } = useContext(Context)
-  const [currentUser, setCurrentUser] = useState(null)
+  const [userInfo, setUserInfo] = useState(null)
 
-  useEffect(() => {
-    // add async await, try catch
+  const loadUserInfo = () => {
     setIsLoading(true)
     try {
       axios.get(`http://localhost:3001/api/user/${user.id}`).then((res) => {
-        setCurrentUser(res.data)
+        setUserInfo(res.data)
       })
     } catch (error) {
       console.log(error)
     }
 
     setIsLoading(false)
-  }, [setIsLoading, setCurrentUser])
+  }
+
+  useEffect(() => {
+    loadUserInfo()
+  }, [setIsLoading, userInfo, setUserInfo])
 
   const ProfilePage = true
   return (
@@ -30,7 +33,7 @@ const ProfileCard = () => {
         <p>profile icon</p>
       </div>
       <div className="profileName">
-        <span>{currentUser?.username}</span>
+        <span>{userInfo?.username}</span>
         <span>Job Title</span>
       </div>
 
@@ -39,18 +42,14 @@ const ProfileCard = () => {
         <div>
           <div className="follow">
             <span>
-              {currentUser?.number_of_following
-                ? currentUser.number_of_following
-                : 0}
+              {userInfo?.number_of_following ? userInfo.number_of_following : 0}
             </span>
             <span>Followings</span>
           </div>
           <div className="vl"></div>
           <div className="follow">
             <span>
-              {currentUser?.number_of_followers
-                ? currentUser.number_of_followers
-                : 0}
+              {userInfo?.number_of_followers ? userInfo.number_of_followers : 0}
             </span>
             <span>Followers</span>
           </div>
@@ -60,9 +59,7 @@ const ProfileCard = () => {
               <div className="vl"></div>
               <div className="follow">
                 <span>
-                  {currentUser?.number_of_posts
-                    ? currentUser.number_of_posts
-                    : 0}
+                  {userInfo?.number_of_posts ? userInfo.number_of_posts : 0}
                 </span>
                 <span> Posts</span>
               </div>
