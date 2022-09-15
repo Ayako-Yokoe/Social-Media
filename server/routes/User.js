@@ -125,10 +125,6 @@ router.post("/followers", (req, res) => {
 // Handle the number of following
 router.post("/following", (req, res) => {
   const { numberOfFollowing, id } = req.body
-
-  console.log("numOfFollowing ", numberOfFollowing)
-  console.log("numOfFollowing id ", id)
-
   db.query(
     "UPDATE User SET number_of_following = ? WHERE id = ?",
     [numberOfFollowing, id],

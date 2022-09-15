@@ -41,20 +41,37 @@ router.post("/", upload, async (req, res, next) => {
 // Get all posts
 router.get("/", (req, res) => {
   db.query("SELECT * FROM Post ORDER BY created_at DESC", (error, results) => {
-    if (error) {
+    if (results) {
+      res.json(results)
+    } else {
+      res.json({ message: "Cannot get posts." })
       console.log(error)
     }
-    res.send(results)
   })
 })
 
-// ??  app.get('/posts/:id', (req, res) => {
+// Get a single post
+router.get("/:id", (req, res) => {
+  const postId = req.params.id
+  if (!postId) {
+    res.json({ message: "Cannot get the post detail. Please try again." })
+  }
+
+  db.query("SELECT * FROM Post WHERE id = ?;", [postId], (error, results) => {
+    if (results && results.length > 0) {
+      res.json(results[0])
+    } else {
+      res.json({ message: "Cannot get the post detail. Please try again." })
+      console.log(error)
+    }
+  })
+})
 
 // Handle like/dislike reactions
 router.post("/reactions", (req, res) => {
   const { numberOfReactions, id } = req.body
   db.query(
-    "UPDATE Post SET number_of_reactions = ? WHERE id = ?",
+    "UPDATE Post SET number_of_reactions = ? WHERE id = ?;",
     [numberOfReactions, id],
     (error, response) => {
       if (response) {

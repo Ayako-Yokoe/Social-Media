@@ -28,9 +28,6 @@ router.post("/", (req, res) => {
 router.post("/create", (req, res) => {
   const { follower_id, person_id } = req.body
 
-  console.log("follower_id ", follower_id)
-  console.log("person_id ", person_id)
-
   if (!follower_id || !person_id) {
     res.json({ message: "Not authorized" })
   }

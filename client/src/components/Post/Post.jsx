@@ -12,75 +12,98 @@ import axios from "axios"
 // Like button - need reloading
 // Delete posts - only the user
 
-const Post = ({ post }) => {
-  const { user, setIsLoading } = useContext(Context)
-  const [displayPost, setDisplayPost] = useState(post)
+const Post = ({ post, loadReactions }) => {
+  const { setIsLoading, user } = useContext(Context)
+  const [currentPost, setCurrentPost] = useState(null)
 
-  const handlePostReaction = async () => {
-    const userId = user.id
-    const postId = displayPost.id
-    if (!userId || !postId) {
-      return
-    }
-
+  const loadPostInfo = () => {
+    setIsLoading(true)
     try {
-      setIsLoading(true)
-      const response = await axios.post("http://localhost:3001/api/reactions", {
-        post_id: postId,
-        user_id: userId,
+      axios.get(`http://localhost:3001/api/posts/${post.id}`).then((res) => {
+        setCurrentPost(res.data)
       })
-      setDisplayPost((prevPost) => ({
-        ...prevPost,
-        hasLiked:
-          response && response.data && response.data.message ? false : true,
-      }))
-      setIsLoading(false)
     } catch (error) {
       console.log(error)
-      setIsLoading(false)
     }
+    setIsLoading(false)
   }
 
   useEffect(() => {
-    handlePostReaction()
-  }, [setDisplayPost])
+    loadPostInfo()
+  }, [setIsLoading, user, loadReactions, post])
+
+  // const handlePostReaction = async () => {
+  //   const userId = user.id
+  //   const postId = displayPost.id
+  //   if (!userId || !postId) {
+  //     return
+  //   }
+
+  //   try {
+  //     setIsLoading(true)
+  //     const response = await axios.post("http://localhost:3001/api/reactions", {
+  //       post_id: postId,
+  //       user_id: userId,
+  //     })
+  //     setDisplayPost((prevPost) => ({
+  //       ...prevPost,
+  //       hasLiked:
+  //         response && response.data && response.data.message ? false : true,
+  //     }))
+  //     setIsLoading(false)
+  //   } catch (error) {
+  //     console.log(error)
+  //     setIsLoading(false)
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   handlePostReaction()
+  // }, [setDisplayPost])
 
   const removeLike = async () => {
     return await axios.post("http://localhost:3001/api/reactions/delete", {
-      post_id: displayPost.id,
+      post_id: currentPost.id,
+      //post_id: post.id,
       user_id: user.id,
     })
   }
-
   const like = async () => {
     return await axios.post("http://localhost:3001/api/reactions/create", {
-      post_id: displayPost.id,
+      post_id: currentPost.id,
+      //post_id: post.id,
       user_id: user.id,
     })
   }
 
   const updateNumberOfReactions = async (numberOfReactions) => {
+    console.log("numberOfReactions ", numberOfReactions)
+
     return await axios.post("http://localhost:3001/api/posts/reactions", {
-      id: displayPost.id,
+      post_id: currentPost.id,
+      //id: post.id,
       numberOfReactions,
     })
   }
 
   const toggleReactions = async () => {
+    await loadReactions(post.id)
     try {
-      if (displayPost.hasLiked) {
+      if (post.hasLiked) {
         await removeLike()
         await updateNumberOfReactions(
-          displayPost.number_of_reactions
-            ? displayPost.number_of_reactions - 1
+          currentPost.number_of_reactions
+            ? currentPost.number_of_reactions - 1
             : 0
+          //(post.number_of_reactions = 0)
         )
       } else {
         await like()
         await updateNumberOfReactions(
-          displayPost.number_of_reactions
-            ? displayPost.number_of_reactions + 1
+          currentPost.number_of_reactions
+            ? currentPost.number_of_reactions + 1
             : 1
+          //(post.number_of_reactions = 0)
         )
       }
     } catch (error) {
@@ -93,26 +116,26 @@ const Post = ({ post }) => {
       <div>
         <Image
           cloudName="dhhigoayx"
-          publicId={displayPost.image}
+          publicId={post.image}
           className="postImage"
         />
       </div>
 
       <div className="postReact">
         <span onClick={toggleReactions}>
-          {displayPost.hasLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+          {post.hasLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
         </span>
 
         <SmsOutlinedIcon />
         <SendOutlinedIcon />
       </div>
       <span style={{ fonrSize: 12 }}>
-        {displayPost?.number_of_reactions
-          ? `${displayPost?.number_of_reactions} likes`
+        {post.number_of_reactions
+          ? `${post.number_of_reactions} likes`
           : `0 likes`}
       </span>
       <div className="detail">
-        <span>{displayPost.post}</span>
+        <span>{post.post}</span>
       </div>
     </div>
   )

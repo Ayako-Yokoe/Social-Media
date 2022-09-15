@@ -15,11 +15,11 @@ router.post("/", (req, res) => {
     [post_id, user_id],
     (error, response) => {
       if (response && response.length) {
-        res.json({ ...response[0] })
+        res.json({ ...response[0], message: " success" })
         //console.log("reaction post response ", response)
       } else {
         res.json({ message: "Not Found" })
-        //console.log("reaction post error ", error)
+        console.log("reaction post error ", error)
       }
     }
   )
@@ -61,9 +61,7 @@ router.post("/delete", (req, res) => {
     "DELETE FROM Post_Reaction WHERE post_id = ? AND user_id = ?;",
     [post_id, user_id],
     (error, response) => {
-      //if (response) {
       if (response && response.affectedRows) {
-        //res.json({ post_id, user_id })
         res.json({ message: "Delete successfully" })
       } else {
         res.json({
