@@ -11,7 +11,7 @@ const FollowersCard = () => {
 
   const loadAllUsers = async () => {
     setIsLoading(true)
-    axios.get("http://localhost:3001/api/user").then((res) => {
+    axios.get("http://localhost:3001/user").then((res) => {
       setUsersYouMayKnow(res.data)
     })
     setIsLoading(false)
@@ -23,13 +23,10 @@ const FollowersCard = () => {
     if (user.id && id) {
       try {
         setIsLoading(true)
-        const response = await axios.post(
-          "http://localhost:3001/api/followers",
-          {
-            follower_id: user.id,
-            person_id: id,
-          }
-        )
+        const response = await axios.post("http://localhost:3001/followers", {
+          follower_id: user.id,
+          person_id: id,
+        })
 
         let updatedUsersYouMayKnow = usersYouMayKnow.map((person) =>
           person.id === id

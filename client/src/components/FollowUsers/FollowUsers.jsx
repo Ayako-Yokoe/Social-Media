@@ -9,7 +9,8 @@ const FollowUsers = ({ person, loadFollowers }) => {
   const loadUserInfo = () => {
     setIsLoading(true)
     try {
-      axios.get(`http://localhost:3001/api/user/${user.id}`).then((res) => {
+      //
+      axios.get(`http://localhost:3001/user/${user.id}`).then((res) => {
         setCurrentUser(res.data)
       })
     } catch (error) {
@@ -18,30 +19,32 @@ const FollowUsers = ({ person, loadFollowers }) => {
     setIsLoading(false)
   }
 
+  // userCallback
   useEffect(() => {
     loadUserInfo()
-  }, [setIsLoading, user, currentUser, setCurrentUser])
+    //}, [setIsLoading, user, currentUser, setCurrentUser])
+  }, [])
 
   const removeFollow = async () => {
-    return await axios.post("http://localhost:3001/api/followers/delete", {
+    return await axios.post("http://localhost:3001/followers/delete", {
       follower_id: user.id,
       person_id: person.id,
     })
   }
   const follow = async () => {
-    return await axios.post("http://localhost:3001/api/followers/create", {
+    return await axios.post("http://localhost:3001/followers/create", {
       follower_id: user.id,
       person_id: person.id,
     })
   }
   const updateNumberOfFollowers = async (numberOfFollowers) => {
-    return await axios.post("http://localhost:3001/api/user/followers", {
+    return await axios.post("http://localhost:3001/user/followers", {
       id: person.id,
       numberOfFollowers,
     })
   }
   const updateNumberOfFollowing = async (numberOfFollowing) => {
-    return await axios.post("http://localhost:3001/api/user/following", {
+    return await axios.post("http://localhost:3001/user/following", {
       id: user.id,
       numberOfFollowing,
     })

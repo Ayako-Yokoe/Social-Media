@@ -14,7 +14,7 @@ const Posts = () => {
 
   const loadAllPosts = async () => {
     setIsLoading(true)
-    axios.get("http://localhost:3001/api/posts").then((res) => {
+    axios.get("http://localhost:3001/posts").then((res) => {
       setPosts(res.data)
     })
     setIsLoading(false)
@@ -26,13 +26,10 @@ const Posts = () => {
     if (user.id && id) {
       try {
         setIsLoading(true)
-        const response = await axios.post(
-          "http://localhost:3001/api/reactions",
-          {
-            user_id: user.id,
-            post_id: id,
-          }
-        )
+        const response = await axios.post("http://localhost:3001/reactions", {
+          user_id: user.id,
+          post_id: id,
+        })
         let updatedPosts = posts.map((post) =>
           post.id === id
             ? {

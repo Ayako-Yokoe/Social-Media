@@ -28,7 +28,7 @@ const PostShare = () => {
   }
 
   const updateNumberOfPosts = async () => {
-    return await axios.post("http://localhost:3001/api/user/posts", {
+    return await axios.post("http://localhost:3001/user/posts", {
       id: user.id,
       numberOfPosts: user.number_of_posts ? user.number_of_posts + 1 : 1,
     })
@@ -42,11 +42,9 @@ const PostShare = () => {
     formData.append("image", uploadedPostImage)
     formData.append("author", user.token)
 
-    const response = await axios.post(
-      "http://localhost:3001/api/posts",
-      formData,
-      { headers: { "Content-Type": "multipart/form-data" } }
-    )
+    const response = await axios.post("http://localhost:3001/posts", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
 
     if (response && response.data && response.data.message) {
       alert(response.data.message)

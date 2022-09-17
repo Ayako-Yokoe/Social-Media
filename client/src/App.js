@@ -61,10 +61,10 @@ function App() {
             element={currentUser ? <Profile /> : <Register />}
           />
 
-          <Route
+          {/* <Route
             path="/upload"
             element={currentUser ? <Upload /> : <Register />}
-          />
+          /> */}
         </Routes>
         {isLoading && <Loading />}
       </BrowserRouter>

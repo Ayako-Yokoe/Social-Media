@@ -6,10 +6,11 @@ import SmsOutlinedIcon from "@mui/icons-material/SmsOutlined"
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined"
 
 import Context from "../../context"
-import { Image } from "cloudinary-react"
+//import { Image } from "cloudinary-react"
 import axios from "axios"
 
 // Like button - need reloading
+// Like button - current user cannot "like/dislike"
 // Delete posts - only the user
 
 const Post = ({ post, loadReactions }) => {
@@ -19,7 +20,7 @@ const Post = ({ post, loadReactions }) => {
   const loadPostInfo = () => {
     setIsLoading(true)
     try {
-      axios.get(`http://localhost:3001/api/posts/${post.id}`).then((res) => {
+      axios.get(`http://localhost:3001/posts/${post.id}`).then((res) => {
         setCurrentPost(res.data)
       })
     } catch (error) {
@@ -62,14 +63,14 @@ const Post = ({ post, loadReactions }) => {
   // }, [setDisplayPost])
 
   const removeLike = async () => {
-    return await axios.post("http://localhost:3001/api/reactions/delete", {
+    return await axios.post("http://localhost:3001/reactions/delete", {
       post_id: currentPost.id,
       //post_id: post.id,
       user_id: user.id,
     })
   }
   const like = async () => {
-    return await axios.post("http://localhost:3001/api/reactions/create", {
+    return await axios.post("http://localhost:3001/reactions/create", {
       post_id: currentPost.id,
       //post_id: post.id,
       user_id: user.id,
@@ -79,7 +80,7 @@ const Post = ({ post, loadReactions }) => {
   const updateNumberOfReactions = async (numberOfReactions) => {
     console.log("numberOfReactions ", numberOfReactions)
 
-    return await axios.post("http://localhost:3001/api/posts/reactions", {
+    return await axios.post("http://localhost:3001/posts/reactions", {
       post_id: currentPost.id,
       //id: post.id,
       numberOfReactions,
@@ -114,11 +115,16 @@ const Post = ({ post, loadReactions }) => {
   return (
     <div className="post">
       <div>
-        <Image
+        {/* <img
+          src={`http://localhost:8080${post.image}`}
+          alt={`${post.author}`}
+        /> */}
+        <img src={post.image} alt={post.author} />
+        {/* <Image
           cloudName="dhhigoayx"
           publicId={post.image}
           className="postImage"
-        />
+        /> */}
       </div>
 
       <div className="postReact">

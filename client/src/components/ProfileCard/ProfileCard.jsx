@@ -10,7 +10,7 @@ const ProfileCard = () => {
   const loadUserInfo = () => {
     setIsLoading(true)
     try {
-      axios.get(`http://localhost:3001/api/user/${user.id}`).then((res) => {
+      axios.get(`http://localhost:3001/user/${user.id}`).then((res) => {
         setUserInfo(res.data)
       })
     } catch (error) {
@@ -20,9 +20,12 @@ const ProfileCard = () => {
     setIsLoading(false)
   }
 
+  // add user
+  // userCallback
   useEffect(() => {
     loadUserInfo()
-  }, [setIsLoading, userInfo, setUserInfo])
+    //}, [setIsLoading, user, userInfo, setUserInfo])
+  }, [])
 
   const ProfilePage = true
   return (
