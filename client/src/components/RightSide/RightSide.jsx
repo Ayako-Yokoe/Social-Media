@@ -7,6 +7,9 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined"
 import TrendCard from "../TrendCard/TrendCard"
 import ShareModal from "../ShareModal/ShareModal"
 
+// Add logout button
+// Use these as a navbar
+
 const RightSide = () => {
   const [modalOpen, setModalOpen] = useState(false)
   return (

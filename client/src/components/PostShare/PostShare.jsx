@@ -8,6 +8,9 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth"
 import ClearIcon from "@mui/icons-material/Clear"
 import Context from "../../context"
 
+// Redirect page to post lists or reload on the same page
+// Input for new post wont work
+
 const PostShare = () => {
   const [newPost, setNewPost] = useState("")
   const [image, setImage] = useState(null) // URL + can be displayed as a list , preview
@@ -54,7 +57,6 @@ const PostShare = () => {
       alert("Your post was uploaded successfully.")
     }
 
-    //
     setNewPost("")
     setImage(null)
     setIsLoading(false)
